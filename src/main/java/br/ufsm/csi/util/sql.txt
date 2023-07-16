@@ -1,0 +1,80 @@
+create table usuario (
+	id_usuario serial primary key,
+	nome varchar(50) not null,
+	email varchar(50) unique,
+	senha varchar(50) not null,
+	data_cadastro date,
+	ativo boolean
+);
+
+insert into usuario (nome, email, senha, data_cadastro, ativo) values ('Romário', 'romario@acad.ufsm.br', '1234', current_timestamp, true);
+insert into usuario (nome, email, senha, data_cadastro, ativo) values ('Juliana', 'juliana@acad.ufsm.br', '1234', current_timestamp, true);
+insert into usuario (nome, email, senha, data_cadastro, ativo) values ('Rafael', 'rafael@acad.ufsm.br', '1234', current_timestamp, true);
+insert into usuario (nome, email, senha, data_cadastro, ativo) values ('Julio', 'julio@acad.ufsm.br', '1234', current_timestamp, true);
+insert into usuario (nome, email, senha, data_cadastro, ativo) values ('Fernanda', 'fernanda@acad.ufsm.br', '1234', current_timestamp, true);
+insert into usuario (nome, email, senha, data_cadastro, ativo) values ('Marcelo', 'marcelo@acad.ufsm.br', '1234', current_timestamp, true);
+
+create table cargo (
+	cod_cargo serial primary key,
+	nome_cargo varchar(50) not null unique
+);
+
+insert into cargo (nome_cargo) values ('FUNCIONARIO');
+insert into cargo (nome_cargo) values ('SOCIO');
+insert into cargo (nome_cargo) values ('INSTRUTOR');
+
+create table usuario_cargo (
+	id_us_car serial primary key,
+	id_usuario int,
+	cod_cargo int,
+	foreign key (id_usuario) references usuario (id_usuario),
+	foreign key (cod_cargo) references cargo (cod_cargo)
+);
+
+insert into usuario_cargo (id_usuario, cod_cargo) values (1, 1);
+insert into usuario_cargo (id_usuario, cod_cargo) values (2, 1);
+insert into usuario_cargo (id_usuario, cod_cargo) values (3, 2);
+insert into usuario_cargo (id_usuario, cod_cargo) values (4, 3);
+insert into usuario_cargo (id_usuario, cod_cargo) values (5, 3);
+insert into usuario_cargo (id_usuario, cod_cargo) values (6, 3);
+
+create table socio (
+	id_socio serial primary key,
+	id_usuario int,
+	foreign key (id_usuario) references usuario (id_usuario)
+);
+
+insert into socio (id_usuario) values (3);
+
+create table funcionario (
+	id_funcionario serial primary key,
+	id_usuario int,
+	foreign key (id_usuario) references usuario (id_usuario)
+);
+
+insert into funcionario (id_usuario) values (1);
+insert into funcionario (id_usuario) values (2);
+
+create table instrutor (
+	id_instrutor serial primary key,
+	id_usuario int,
+	foreign key (id_usuario) references usuario (id_usuario)
+);
+
+insert into instrutor (id_usuario) values (4);
+insert into instrutor (id_usuario) values (5);
+insert into instrutor (id_usuario) values (6);
+
+create table atividade (
+	id_atividade serial primary key,
+	id_socio int,
+	id_instrutor int,
+	nome_atividade varchar(50) not null,
+	dia varchar(50) not null,
+	hora varchar(50) not null,
+	foreign key (id_socio) references socio (id_socio),
+	foreign key (id_instrutor) references instrutor (id_instrutor)
+);
+
+alter table socio add carteiraClube varchar(10) not null default 'CTX1234';
+alter table instrutor add cracha varchar(10) not null default 'RTX1234';
